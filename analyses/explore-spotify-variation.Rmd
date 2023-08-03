@@ -14,6 +14,7 @@ Data was obtained from the [`R4DS Tidy Tuesday` repository](https://github.com/r
 # Load libraries
 suppressPackageStartupMessages({
   library(ggplot2)
+  library(patchwork)
 })
 ```
 
@@ -106,10 +107,6 @@ umap1 <- ggplot(umap_full_df) +
   ylim(-10, 10) + xlim(-10, 20) + 
   labs(title = "Instrumentalness variable")
 
-umap1
-```
-
-```{r}
 umap2 <- ggplot(umap_full_df) +
   aes(x = UMAP1, y = UMAP2, color = as.factor(mode)) +
   geom_point(alpha = 0.5,
@@ -117,8 +114,10 @@ umap2 <- ggplot(umap_full_df) +
   # set axis limits to visualize non-outlier points
   ylim(-10, 10) + xlim(-10, 20) +
   labs("Mode (major/minor scale) variable")
+```
 
-umap2
+```{r}
+umap1 / umap2
 ```
 
 
