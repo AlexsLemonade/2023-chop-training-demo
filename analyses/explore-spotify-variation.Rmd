@@ -90,4 +90,35 @@ ggplot(umap_df) +
   ylim(-10, 10) + xlim(-10, 20)
 ```
 
+```{r}
+# Add spotify variables into umap_df
+umap_full_df <- dplyr::bind_cols(
+  umap_df,
+  spotify_data
+)
+
+# plot the UMAP with colors that show UMAP trends
+umap1 <- ggplot(umap_full_df) +
+  aes(x = UMAP1, y = UMAP2, color = instrumentalness) +
+  geom_point(alpha = 0.5,
+             size = 0.1) +
+  # set axis limits to visualize non-outlier points
+  ylim(-10, 10) + xlim(-10, 20) + 
+  labs(title = "Instrumentalness variable")
+
+umap1
+```
+
+```{r}
+umap2 <- ggplot(umap_full_df) +
+  aes(x = UMAP1, y = UMAP2, color = as.factor(mode)) +
+  geom_point(alpha = 0.5,
+             size = 0.1) +
+  # set axis limits to visualize non-outlier points
+  ylim(-10, 10) + xlim(-10, 20) +
+  labs("Mode (major/minor scale) variable")
+
+umap2
+```
+
 
