@@ -3,7 +3,7 @@ library(palmerpenguins)
 # Define path to output file
 output_tsv <- here::here("results", "penguins_mass.tsv")
 
-# Create data frame of mean mass for each species
+# Create data frame of mean mass for each species & island combo
 penguin_mass <- penguins |>
   dplyr::filter(year == 2008) |>
   dplyr::group_by(species, island) |>
