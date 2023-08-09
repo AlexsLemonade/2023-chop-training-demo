@@ -1,4 +1,6 @@
-species	mean_mass
-Adelie	3700.662251655629
-Chinstrap	3733.0882352941176
-Gentoo	5076.016260162602
+species	island	mean_mass
+Adelie	Biscoe	3709.659090909091
+Adelie	Dream	3688.3928571428573
+Adelie	Torgersen	3706.372549019608
+Chinstrap	Dream	3733.0882352941176
+Gentoo	Biscoe	5076.016260162602
