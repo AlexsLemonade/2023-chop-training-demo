@@ -15,8 +15,17 @@ option_list <- list(
 opt <- parse_args(OptionParser(option_list = option_list))
 user_bins <- opt$bins
 
+# Define output plot filename
+plot_file <- here::here("plots", 
+                        glue::glue("penguins_histogram_{user_bins}_bins.png")
+)
+
 # Make histogram of penguin bill depth --------
-ggplot(penguins) +
+hist_plot <- ggplot(penguins) +
   aes(x = bill_depth_mm) +
   geom_histogram(bins = user_bins) +
   labs(x = "Penguin bill depth (mm)")
+
+# Export plot to file ---------------
+ggsave(filename = plot_file, 
+       plot = hist_plot)
