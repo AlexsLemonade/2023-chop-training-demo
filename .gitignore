@@ -1,0 +1,8 @@
+# R project files to ignore
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Mac file to ignore
+.DS_Store
