@@ -29,3 +29,4 @@ hist_plot <- ggplot(penguins) +
 # Export plot to file ---------------
 ggsave(filename = plot_file, 
        plot = hist_plot)
+ 
