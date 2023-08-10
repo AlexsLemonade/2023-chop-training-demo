@@ -16,6 +16,8 @@ suppressPackageStartupMessages({
   library(ggplot2)
   library(patchwork)
 })
+
+set.seed(10)
 ```
 
 
@@ -68,7 +70,7 @@ ggplot(pca_df) +
 
 ```{r}
 # Calculate UMAP itself with default parameters
-umap_result <- umap(pca$x)
+umap_result <- umap::umap(pca$x)
 ```
 
 ```{r}
@@ -113,7 +115,7 @@ umap2 <- ggplot(umap_full_df) +
              size = 0.1) +
   # set axis limits to visualize non-outlier points
   ylim(-10, 10) + xlim(-10, 20) +
-  labs("Mode (major/minor scale) variable")
+  labs(title = "Mode (major/minor scale) variable")
 ```
 
 ```{r}
