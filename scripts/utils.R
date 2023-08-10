@@ -1,3 +1,13 @@
+#' Perform simple linear regression and return tidied fit
+#'
+#' @param df The data frame that contains variables for modeling
+#' @param x_var A string of the x (predictor) variable to model
+#' @param y_var A string of the y (response) variable to model
+#'
+#' @return A data frame of the tidied model fit
+#'
+#' @examples
+#' run_tidy_regression(iris, "Sepal.Length", "Sepal.Width")
 run_tidy_regression <- function(df, x_var, y_var) {
   
   # build model formula from input strings
