@@ -14,7 +14,10 @@ Data was obtained from the [`R4DS Tidy Tuesday` repository](https://github.com/r
 # Load libraries
 suppressPackageStartupMessages({
   library(ggplot2)
+  library(patchwork)
 })
+
+set.seed(10)
 ```
 
 
@@ -28,15 +31,21 @@ spotify_data <- readr::read_csv('https://raw.githubusercontent.com/rfordatascien
 
 In this section, we'll calculate PCA and then plot PC2 vs PC1.
 
+
 ```{r}
-# First, calculate PCA
-pca <- spotify_data |>
+# First clean up spotify data
+# this also facilitates UMAP visualization
+spotify_data <- spotify_data |>
   # retain only numeric data
   dplyr::select(where(is.numeric)) |>
   tidyr::drop_na() |>
   # remove any columns without variation, required for PCA calculation
-  dplyr::select(where(~dplyr::n_distinct(.) > 1)) |>
-  # scale and perform PCA
+  dplyr::select(where(~dplyr::n_distinct(.) > 1))
+```
+
+```{r}
+# First, calculate PCA
+pca <- spotify_data |>
   scale() |>
   prcomp()
 
@@ -56,3 +65,61 @@ ggplot(pca_df) +
              alpha = 0.5) + 
   theme_bw()
 ```
+
+## UMAP
+
+```{r}
+# Calculate UMAP itself with default parameters
+umap_result <- umap::umap(pca$x)
+```
+
+```{r}
+# Extract UMAP1 and UMAP2 into a data frame
+umap_df <- data.frame(umap_result$layout) |>
+  # rename X1, X2 --> UMAP1, UMAP2
+  dplyr::rename_all(.funs = gsub,
+                    pattern = "^X",
+                    replacement = "UMAP")
+```
+
+```{r}
+# plot the UMAP:
+ggplot(umap_df) +
+  aes(x = UMAP1, y = UMAP2) +
+  geom_point(alpha = 0.5,
+             size = 0.1,
+             color = "darkgreen") +
+  # set axis limits to visualize non-outlier points
+  ylim(-10, 10) + xlim(-10, 20)
+```
+
+```{r}
+# Add spotify variables into umap_df
+umap_full_df <- dplyr::bind_cols(
+  umap_df,
+  spotify_data
+)
+
+# plot the UMAP with colors that show UMAP trends
+umap1 <- ggplot(umap_full_df) +
+  aes(x = UMAP1, y = UMAP2, color = instrumentalness) +
+  geom_point(alpha = 0.5,
+             size = 0.1) +
+  # set axis limits to visualize non-outlier points
+  ylim(-10, 10) + xlim(-10, 20) + 
+  labs(title = "Instrumentalness variable")
+
+umap2 <- ggplot(umap_full_df) +
+  aes(x = UMAP1, y = UMAP2, color = as.factor(mode)) +
+  geom_point(alpha = 0.5,
+             size = 0.1) +
+  # set axis limits to visualize non-outlier points
+  ylim(-10, 10) + xlim(-10, 20) +
+  labs(title = "Mode (major/minor scale) variable")
+```
+
+```{r}
+umap1 / umap2
+```
+
+
